@@ -10,6 +10,38 @@ struct TreeNode
 
 struct TreeNode* root = NULL ;
 
+//function to find the minimum in tree
+struct TreeNode* findMinimum(struct TreeNode* nodeUnderConsideration)
+{
+    if( nodeUnderConsideration == NULL )
+    {
+        return NULL ;
+    }
+    
+    while ( nodeUnderConsideration->left != NULL )
+    {
+        nodeUnderConsideration =  findMinimum(nodeUnderConsideration->left);
+    }
+    
+    return nodeUnderConsideration ;
+};
+
+//function to find the maximum in tree
+struct TreeNode* findMaximum(struct TreeNode* nodeUnderConsideration)
+{
+    if( nodeUnderConsideration == NULL )
+    {
+        return NULL ;
+    }
+    
+    while ( nodeUnderConsideration->right != NULL )
+    {
+        nodeUnderConsideration =  findMaximum(nodeUnderConsideration->right);
+    }
+    
+    return nodeUnderConsideration ;
+};
+
 struct TreeNode* getTheNewNode(int newNodeValue)
 {
     struct TreeNode* node1 = (struct TreeNode*)(malloc(sizeof(struct TreeNode)));
@@ -61,11 +93,13 @@ struct TreeNode * Insert(struct TreeNode * nodeUnderConsideration , int data)
             root = returnNode ;
         }
         
+        printf("\n\n %d %s\n",data, "RETURNING THE ACTUAL REATED NODE");
         return returnNode;
     }
     else if( data < (nodeUnderConsideration ->data) )
     {
         //go right
+        printf("\n%d %s\n",data, "going to the left to create ");
         
         nodeUnderConsideration ->left = Insert(nodeUnderConsideration->left,data);
         
@@ -75,6 +109,7 @@ struct TreeNode * Insert(struct TreeNode * nodeUnderConsideration , int data)
     else if( data > (nodeUnderConsideration->data))
     {
         //go left
+        printf("\n%d %s\n",data, "going to the right to create ");
         
         nodeUnderConsideration->right = Insert(nodeUnderConsideration->right , data);
         
@@ -103,6 +138,8 @@ int main()
     
     Insert(root,555);
     
+    Insert(root,40003);
+    
     Insert(root,-990);
     
     Insert(root,-1090);
@@ -113,16 +150,29 @@ int main()
     
     Insert(root,-1390);
     
-    struct TreeNode * node = Search(root,556) ;
+    struct TreeNode * node  = findMinimum(root) ;
+    
+    if(node != NULL)
+    {
+        printf("THIS IS THE MINIMUM \n %d \n\n" ,node->data);
+    }
+    
+    node = findMaximum(root);
+    
+    if(node != NULL)
+    {
+        printf("THIS IS THE MAXIMUM \n %d\n\n" ,node->data );
+    }
+    
+    node = Search(root,556) ;
     
     if( NULL != node )
     {
-        printf("%s\n", "The Element was found");
+        printf("%s\n", "THE ELEMENT HAS BEEN FOUND");
     }
     else
     {
-        printf("%s\n", "The Element could not be found");
+        printf("%s\n", "NO!!!!!!!!");
     }
     return 0;
 }
-
